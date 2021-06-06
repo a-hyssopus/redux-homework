@@ -1,12 +1,15 @@
-import React from "react";
+import React from "react"
+import { useDispatch } from "react-redux";
+import { ADD_TODO } from "../../store/types";
 
-function TodoForm({ addTodo }) {
+function TodoForm() {
     const [value, setValue] = React.useState("");
+    const dispatch = useDispatch()
 
     const handleSubmit = event => {
         event.preventDefault();
         if (!value) return;
-        addTodo(value);
+        dispatch({ type: ADD_TODO, text: value });
         setValue("");
     };
 

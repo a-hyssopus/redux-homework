@@ -1,34 +1,31 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "./App.css"
 import Todo from "./components/Todo/Todo"
 import TodoForm from "./components/Todo/TodoForm"
+import { useDispatch, useSelector } from "react-redux";
+import { requestPost } from "./store/actions";
 
 function App() {
-    const [todos, setTodos] = React.useState([]);
+    const todos = useSelector(state => state.todos)
+    const post = useSelector(state => state.posts)
+    const dispatch = useDispatch()
 
-    const addTodo = text => {
-        const newTodos = [...todos, { text }];
-        setTodos(newTodos);
-    };
-
-    const removeTodo = index => {
-        const newTodos = [...todos];
-        newTodos.splice(index, 1);
-        setTodos(newTodos);
-    };
+    useEffect(() => {
+        dispatch(requestPost())
+    }, [])
 
     return (
         <div className="app">
             <div className="todo-list">
-                <TodoForm addTodo={addTodo} />
+                <TodoForm/>
                 {todos.map((todo, index) => (
                     <Todo
                         key={index}
                         index={index}
                         todo={todo}
-                        removeTodo={removeTodo}
                     />
                 ))}
+                <p className="post">{post}</p>
             </div>
         </div>
     );
